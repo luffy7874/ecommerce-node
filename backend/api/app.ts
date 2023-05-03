@@ -1,16 +1,20 @@
 import dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
+import cors from "cors";
+import {route as adminRoute} from './routes/admin';
+import Database from './config/database';
 
 const app: Application = express();
 dotenv.config();
 
-app.get("/test", (req:Request, res:Response):void => {
-    res.status(302).redirect("/api");
-});
+const {MONGO_URI} = process.env;
 
-app.get("/api", (req:Request, res:Response):void => {
-    res.status(403).json({"msg" : "your should not be here Hehe :)"});
-});
+Database.databaseConnect(MONGO_URI!);
 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(adminRoute);
 
 export default app;
