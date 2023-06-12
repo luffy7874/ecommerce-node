@@ -1,4 +1,16 @@
-import Errors from './Errors';
+import Errors from './Error';
+import axios from 'axios';
+
+const token = localStorage.getItem('token');
+
+const header = {
+    headers : {
+        "Authorization": `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+    }
+}
+
+const API_URL = process.env.REACT_APP_SERVER_URI;
 
 class Form {
 
@@ -32,15 +44,31 @@ class Form {
         this.errors.clear();
     }
 
-    async submit(requestType, url, data, token){
+    get(uri){
+        return this.submit('get', uri, header)
+    }
+
+    post(uri, data){
+        return this.submit('post', uri, data, header)
+    }
+
+    put(uri, data){
+        return this.submit('put', uri, data, header)
+    }
+
+    delete(uri){
+        return this.submit('delete', uri, header)
+    }
+
+    async submit(requestType, url, data, header){
         return await new Promise((resolve, reject) =>{
-            axios[requestType](url, data, token)
+            axios[requestType](API_URL+url, data, header)
             .then(response => {
                 this.onSuccess(response.data);
                 resolve(response.data);
             })
             .catch(error => {
-                this.onFail(error.response.data.errors);
+                this.onFail(error.response.data);
                 reject(error.response.data);
             })
         })

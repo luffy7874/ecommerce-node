@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
-import express, { Application, Request, Response } from 'express';
+dotenv.config();
+import express, { Application } from 'express';
 import cors from "cors";
-import {route as adminRoute} from './routes/admin';
+import {route as authRoute} from './routes/AuthRoute';
+import {route as categoryRoute} from './routes/CategoryRoute';
 import Database from './config/database';
 
 const app: Application = express();
-dotenv.config();
 
 const {MONGO_URI} = process.env;
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(adminRoute);
+app.use(authRoute);
+app.use(categoryRoute);
 
 export default app;

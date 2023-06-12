@@ -4,9 +4,10 @@ export const validate = (schema: any) => async (req:Request, res: Response, next
     try {
         await schema.validate({
             body: req.body,
+            query: req.query,
         });
         return next();
     } catch (err: any) {
-        return res.status(403).json({ type: err.name, message: err.message });
+        return res.status(400).json({ type: err.name, message: err.message });
     }
 };

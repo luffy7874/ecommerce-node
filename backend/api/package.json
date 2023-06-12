@@ -9,16 +9,19 @@
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.0",
         "mongoose": "^7.1.0",
+        "multer": "^1.4.5-lts.1",
         "yup": "^1.1.1"
     },
     "devDependencies": {
         "@types/cors": "^2.8.13",
         "@types/jsonwebtoken": "^9.0.2",
+        "@types/multer": "^1.4.7",
         "@types/node": "^18.15.11",
         "ts-node": "^10.9.1",
         "typescript": "^5.0.4"
     },
     "scripts": {
-        "dev": "nodemon ./index.ts"
+        "dev": "nodemon ./index.ts",
+        "seed": "ts-node seeders/AdminSeed.ts"
     }
 }

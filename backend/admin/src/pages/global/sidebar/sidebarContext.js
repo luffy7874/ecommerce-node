@@ -4,35 +4,37 @@ import MyProSidebar from "./MyProSidebar";
 
 const SidebarContext = createContext({});
 
-export const MyProSidebarProvider = ({ children }) => {
+export const MyProSidebarProvider = ({ children, token }) => {
   const [sidebarRTL, setSidebarRTL] = useState(false);
   const [sidebarBackgroundColor, setSidebarBackgroundColor] =
     useState(undefined);
   const [sidebarImage, setSidebarImage] = useState(undefined);
+
+
   return (
     <ProSidebarProvider>
-      <SidebarContext.Provider
-        value={{
-          sidebarBackgroundColor,
-          setSidebarBackgroundColor,
+        <SidebarContext.Provider
+            value={{
+                sidebarBackgroundColor,
+                setSidebarBackgroundColor,
 
-          sidebarImage,
-          setSidebarImage,
+                sidebarImage,
+                setSidebarImage,
 
-          sidebarRTL,
-          setSidebarRTL,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: sidebarRTL ? "row-reverse" : "row",
-          }}
+                sidebarRTL,
+                setSidebarRTL,
+            }}
         >
-          {/* <MyProSidebar /> */}
-          {children}
+        <div
+            style={{
+                display: "flex",
+                flexDirection: sidebarRTL ? "row-reverse" : "row",
+            }}
+        >
+            {token && <MyProSidebar />}
+            {children}
         </div>
-      </SidebarContext.Provider>
+        </SidebarContext.Provider>
     </ProSidebarProvider>
   );
 };

@@ -33,6 +33,10 @@ const UserSchema = new Schema({
     password: {
         type: String,
         require: true
+    },
+    date: {
+        type: Date,
+        default : new Date()
     }
 });
 

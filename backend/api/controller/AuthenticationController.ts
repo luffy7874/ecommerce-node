@@ -1,17 +1,22 @@
 import { Request, Response } from "express";
 import User from "../model/UserModel";
-import jwt from 'jsonwebtoken'
 import { compare, hash } from 'bcrypt';
+import AuthToken from "../middleware/AuthToken";
 
 class AuthenticationController{
 
+    public authtoken: any;
+
+    constructor(){
+        this.authtoken =  new AuthToken();
+    }
     /*
         User Register code is here
         -------------------------------------
         we are checking old user then putting logics
     */ 
 
-    static register = async(req: Request, res: Response): Promise<void> => {
+    register = async(req: Request, res: Response): Promise<void> => {
 
         const {name, email, phone, password} = req.body;
 
@@ -41,29 +46,18 @@ class AuthenticationController{
         we are using jwt to authenticate users
     */
 
-    static login = async(req: Request, res: Response): Promise<void> => {
+     login = async(req: Request, res: Response): Promise<void> => {
 
         const {email, password} = req.body;
-
-        const { TOKEN_KEY } = process.env;
 
         const user = await User.findOne({
             email : email
         });
 
         if(user && (await compare(password, user.password))){
-            const token = jwt.sign(
-                {
-                    name: user!.name,
-                    role: user!.role
-                },
-                TOKEN_KEY!,
-                {
-                    expiresIn : "10s"
-                }
-            );
+            const token =  this.authtoken.createJwtToken(user._id, user.name, user.email);
 
-            res.status(200).send({"token": token});
+            res.status(200).send(token);
         }else{
             res.status(401).send({"msg": "invalid username/password"});
         }
