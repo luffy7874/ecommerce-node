@@ -34,5 +34,6 @@ const upload = multer({storage: storage, fileFilter : fileFilters});
 
 route.get('/api/category/list', authToken.verifyAuth, categoryController.index);
 route.post('/api/category/add', [authToken.verifyAuth, upload.single('image'), validate(categoryRequest)], categoryController.store);
+route.get('/api/category/edit/:id', categoryController.edit);
 
 export {route};

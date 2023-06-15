@@ -2,12 +2,14 @@ import {
     Box,
     useTheme,
     useMediaQuery,
+    Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import Form from '../../FormHandler/Form';
 import { useEffect, useState } from "react";
 import ModeIcon from '@mui/icons-material/Mode';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export function customRowIndexColumn() {
     return ({
@@ -30,29 +32,42 @@ function Category(){
     const smScreen = useMediaQuery(theme.breakpoints.up("sm"));
     const [data, setData] = useState([]);
 
+    const handleDelete = (id) => {
+        console.log(id);
+    }
+
     const columns = [
         customRowIndexColumn(),
         "name",
         "image", 
         {
-            name: "Delete",
+            name: "Actions",
             options: {
-              filter: true,
+              filter: false,
               sort: false,
-              empty: true,
-              customBodyRender: (value, tableMeta, updateValue) => {
+              customBodyRenderLite: (dataIndex, rowIndex) => {
                 return (
-                  <button onClick={() => {
-                    const { data } = this.state;
-                    data.shift();
-                    this.setState({ data });
-                  }}>
-                    Delete
-                  </button>
+                    <>
+                        {/*
+                            Edit button
+                        */}
+                        <Link to={`/edit/category/${data[dataIndex]._id}`}>
+                            <Button aria-label="edit" variant="contained" color="secondary">
+                                <ModeIcon />
+                            </Button>
+                        </Link>
+
+                        {/*
+                            Delete button
+                        */}
+                        <Button aria-label="edit" sx={{ ml: 2 }} variant="contained" color="error" onClick={() => handleDelete(data[dataIndex]._id)}>
+                            <DeleteForeverIcon />
+                        </Button>
+                    </>
                 );
-              }
-            }
+             }
           },
+        }
     ];
 
     const options = {

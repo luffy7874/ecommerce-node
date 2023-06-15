@@ -1,6 +1,7 @@
 import Login from "./authentication/login";
 import Category from "./pages/category";
 import AddCategory from "./pages/category/add";
+import EditCategory from "./pages/category/edit";
 import Dashboard from "./pages/dashboard";
 
 const routes = [
@@ -27,6 +28,12 @@ const routes = [
         key : "add-category",
         path : "/add-category",
         component : <AddCategory />
+    },
+    {
+        type : "private",
+        key : "edit-category",
+        path : "/edit/category/:id",
+        component : <EditCategory />
     },
 ]
 

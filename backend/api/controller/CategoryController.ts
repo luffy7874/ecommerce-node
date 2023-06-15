@@ -24,6 +24,12 @@ class CategoryController {
         res.status(200).send("category is inserted successfully");
     }
 
+    edit = async (req: Request, res: Response):Promise<void> => {
+        const { id } = req.params;
+        const data = await Category.findOne({ _id: id });
+        res.status(200).send(data); 
+    }
+
 }
 
 export default CategoryController;

@@ -30,19 +30,18 @@ const AuthContextProvider = ({ children }) => {
         }else {
             navigate(location.pathname);
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, location.pathname, token, navigate]);
 
     const login = (token) => {
-        console.log("hi");
         localStorage.setItem('token', token);
         setIsAuthenticated(true);
-        navigate('/dashboard');
+        window.location.reload();
     }
 
     const logout = () =>{
         localStorage.removeItem('token');
         setIsAuthenticated(false);
-        navigate('/');
+        window.location.reload();
     }
 
     const verifyToken = () => {
