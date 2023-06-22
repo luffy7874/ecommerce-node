@@ -5,9 +5,7 @@ import { DropzoneContainer, Thumbnails, thumbsContainer } from "../../../compone
 import EditImagePreview from "../../../components/EditImagePreview";
 
 
-function CategoryForm({category, filename, handleFormSubmit, initialValues, checkoutSchema,setCategory, dropzoneError, getRootProps, getInputProps, files}){
-    
-    // console.log(category);
+function CategoryForm({filename, handleFormSubmit, initialValues, checkoutSchema,setCategory, dropzoneError, getRootProps, getInputProps, files}){
 
     return (
         
@@ -26,7 +24,7 @@ function CategoryForm({category, filename, handleFormSubmit, initialValues, chec
                         label="Category"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.category && category}
+                        value={values.category}
                         name="category"
                         error={!!touched.category && !!errors.category}
                         helperText={touched.category && errors.category}

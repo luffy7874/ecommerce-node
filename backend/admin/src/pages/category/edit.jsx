@@ -49,6 +49,7 @@ function EditCategory(){
     const fetchData = useCallback(async() => {
         await form.get(`/api/category/edit/${id}`).then(response =>{
             setCategory(response.name);
+            initialValues.category = category;
             setFilename(response.image);
         })
     }, [id, form]);
@@ -66,6 +67,7 @@ function EditCategory(){
     
     
     const handleFormSubmit = (event) => {
+      // console.log(initialValues); return false;
         if(!initialValues.image){
           setDropzoneError('Please select image first');
           return false;
@@ -95,14 +97,11 @@ function EditCategory(){
       setOpen(false);
     };
 
-    console.log(category);
-
     return (
         <>
             <Box m="20px">
                 <Header title="Edit Category" />
                 <CategoryForm
-                    category={category}
                     filename={filename}
                     handleFormSubmit={handleFormSubmit}
                     initialValues={initialValues}
