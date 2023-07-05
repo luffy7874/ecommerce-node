@@ -30,6 +30,12 @@ class CategoryController {
         res.status(200).send(data); 
     }
 
+    update = async(req: Request, res: Response):Promise<void> => {
+        res.status(200).send(req.body);
+        const { id } = req.params;
+        const image = req.file?.filename;
+    }
+
 }
 
 export default CategoryController;

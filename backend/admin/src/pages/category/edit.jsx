@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Form from "../../FormHandler/Form";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import * as yup from "yup";
 import { Box } from "@mui/material";
@@ -8,8 +8,15 @@ import Header from "../../components/Header";
 import CategoryForm from "./components/CategoryForm";
 import ToastrMsg from "../../components/ToastrMsg";
 
-function EditCategory(){
 
+//formik values
+const initialValues = {
+  category: "",
+  image : null,
+  old_img : "",
+};
+
+function EditCategory(){
     //importing axios methods using form class 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const form = new Form();
@@ -18,7 +25,6 @@ function EditCategory(){
     let { id } = useParams();
 
     //states are here
-    const [category, setCategory] = useState("");
     const [files, setFiles] = useState([]);
     const [dropzoneError, setDropzoneError] = useState([]);
     const [open, setOpen] = useState(false);
@@ -38,18 +44,11 @@ function EditCategory(){
         multiple: false
     });   
 
-    //formik values
-    const initialValues = {
-        category: category,
-        image : acceptedFiles.length > 0 ? acceptedFiles[0] : null,
-        old_img : filename,
-    };
-
-    //fatching category by id
+    // fatching category by id
     const fetchData = useCallback(async() => {
         await form.get(`/api/category/edit/${id}`).then(response =>{
-            setCategory(response.name);
-            initialValues.category = category;
+            initialValues.category = response.name;
+            initialValues.old_img = response.image;
             setFilename(response.image);
         })
     }, [id, form]);
@@ -57,26 +56,26 @@ function EditCategory(){
 
   
     useEffect(() => {
-        fetchData()
+        fetchData();
         return () => files.forEach(file => URL.revokeObjectURL(file.preview));
     }, [fetchData, files]);
 
     useEffect(() => {
       initialValues.image = files.length > 0 ? acceptedFiles[0] : null;
-    });
+    }, [acceptedFiles, files.length]);
     
     
     const handleFormSubmit = (event) => {
       // console.log(initialValues); return false;
-        if(!initialValues.image){
+        if(initialValues.old_img == null && !initialValues.image){
           setDropzoneError('Please select image first');
           return false;
         }
 
-        form.post(`/api/category/edit`, initialValues)
+        form.post(`/api/category/update/${id}`, initialValues)
           .then(response =>{
             setResponse(response);
-            setOpen(true);
+            // setOpen(true);
           })
           .catch(error =>{
             setDropzoneError(error.message);
@@ -106,7 +105,6 @@ function EditCategory(){
                     handleFormSubmit={handleFormSubmit}
                     initialValues={initialValues}
                     checkoutSchema={checkoutSchema}
-                    setCategory={setCategory}
                     dropzoneError={dropzoneError}
                     getRootProps={getRootProps}
                     getInputProps={getInputProps}

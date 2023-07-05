@@ -6,7 +6,7 @@ import EditImagePreview from "../../../components/EditImagePreview";
 
 
 function CategoryForm({filename, handleFormSubmit, initialValues, checkoutSchema,setCategory, dropzoneError, getRootProps, getInputProps, files}){
-
+    // console.log(files.leng);
     return (
         
         <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={checkoutSchema}>
@@ -29,7 +29,6 @@ function CategoryForm({filename, handleFormSubmit, initialValues, checkoutSchema
                         error={!!touched.category && !!errors.category}
                         helperText={touched.category && errors.category}
                         sx={{ gridColumn: "span 4" }}
-                        onInput={(event) => {setCategory(event.target.value)}}
                     />
 
                     <Box sx={{ gridColumn: "span 4" }}>
@@ -43,8 +42,8 @@ function CategoryForm({filename, handleFormSubmit, initialValues, checkoutSchema
                         <aside style={thumbsContainer}>
                             {files.length > 0 && <Thumbnails files={files} />}
                         </aside>
-                        {filename && 
-                            <EditImagePreview filename={filename} />
+                        {files.length === 0 ? 
+                            <EditImagePreview filename={filename} /> : ""
                         }
                     </Box>
                     <Box display="flex" justifyContent="right" sx={{ gridColumn: "span 4" }}>
